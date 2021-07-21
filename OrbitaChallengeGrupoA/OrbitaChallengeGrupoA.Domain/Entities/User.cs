@@ -4,7 +4,7 @@ namespace OrbitaChallengeGrupoA.Domain.Entities
 {
     public class User : BaseEntity
     {
-        public User(string name, string email, string password, bool active)
+        public User(string name, string email, string password)
         {
             Name = name;
             Email = email;

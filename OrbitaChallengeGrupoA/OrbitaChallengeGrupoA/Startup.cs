@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OrbitaChallengeGrupoA.Application.Commands.CreateUser;
+using OrbitaChallengeGrupoA.Domain.Repositories;
 using OrbitaChallengeGrupoA.Infrastructure.Persistence;
+using OrbitaChallengeGrupoA.Infrastructure.Persistence.Repositories;
 
 namespace OrbitaChallengeGrupoA
 {
@@ -31,6 +35,11 @@ namespace OrbitaChallengeGrupoA
             var connectionString = Configuration.GetConnectionString("OrbitaChallengeGrupoAConnection");
 
             services.AddDbContext<OrbitaChallengeGrupoADbContext>(options => options.UseMySQL(connectionString));
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
+            services.AddMediatR(typeof(CreateUserCommand));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
