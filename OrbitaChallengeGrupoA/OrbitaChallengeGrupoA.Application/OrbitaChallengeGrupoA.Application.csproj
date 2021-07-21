@@ -5,15 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\InputModels\" />
-    <Folder Include="DTOs\ViewModels\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrbitaChallengeGrupoA.Domain\OrbitaChallengeGrupoA.Domain.csproj" />
   </ItemGroup>
 
 </Project>

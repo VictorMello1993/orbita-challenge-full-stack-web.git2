@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrbitaChallengeGrupoA.Infrastructure.Persistence;
 
 namespace OrbitaChallengeGrupoA.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(OrbitaChallengeGrupoADbContext))]
-    partial class OrbitaChallengeGrupoADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210720234845_RemoveActiveFieldStudentColumn")]
+    partial class RemoveActiveFieldStudentColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
