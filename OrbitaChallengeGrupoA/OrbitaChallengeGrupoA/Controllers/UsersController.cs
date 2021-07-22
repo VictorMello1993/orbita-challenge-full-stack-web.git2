@@ -6,6 +6,7 @@ using OrbitaChallengeGrupoA.Application.Commands.UpdateUser;
 using OrbitaChallengeGrupoA.Application.DTOs.InputModels;
 using OrbitaChallengeGrupoA.Application.Queries.GetAllUsers;
 using OrbitaChallengeGrupoA.Application.Queries.GetUserById;
+using OrbitaChallengeGrupoA.Domain.Exceptions;
 using System.Threading.Tasks;
 
 namespace OrbitaChallengeGrupoA.API.Controllers
@@ -27,7 +28,7 @@ namespace OrbitaChallengeGrupoA.API.Controllers
 
             var usersViewModel = await _mediator.Send(query);
 
-            if(usersViewModel == null)
+            if (usersViewModel == null)
             {
                 return NotFound();
             }
@@ -55,7 +56,7 @@ namespace OrbitaChallengeGrupoA.API.Controllers
         {
             var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { Id = id}, command);
+            return CreatedAtAction(nameof(GetById), new { Id = id }, command);
         }
 
         [HttpPut("{id}")]
@@ -63,7 +64,7 @@ namespace OrbitaChallengeGrupoA.API.Controllers
         {
             var command = new UpdateUserCommand(id, inputModel.Name, inputModel.Email);
 
-            await _mediator.Send(command);            
+            await _mediator.Send(command);
 
             return NoContent();
         }

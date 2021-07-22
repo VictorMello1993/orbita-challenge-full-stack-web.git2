@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace OrbitaChallengeGrupoA.Application.Commands.DeleteStudent
 {
-    class DeleteStudentCommand
+    public class DeleteStudentCommand : IRequest<Unit>
     {
+        public DeleteStudentCommand(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; private set; }
     }
 }

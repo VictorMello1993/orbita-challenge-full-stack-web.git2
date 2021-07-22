@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,13 +17,20 @@ namespace OrbitaChallengeGrupoA.Application.Commands.DeleteUser
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(request.Id);
 
-            user.Delete();
+                user.Delete();
 
-            await _userRepository.SaveChangesAsync();
+                await _userRepository.SaveChangesAsync();
 
-            return Unit.Value;
+                return Unit.Value;
+            }
+            catch
+            {
+                throw new UserInactiveException();
+            }
         }
     }
 }
