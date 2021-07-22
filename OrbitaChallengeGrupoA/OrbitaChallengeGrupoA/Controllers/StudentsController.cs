@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using OrbitaChallengeGrupoA.Application.Commands.CreateStudent;
+using OrbitaChallengeGrupoA.Application.Commands.DeleteStudent;
+using OrbitaChallengeGrupoA.Application.Commands.UpdateStudent;
 using OrbitaChallengeGrupoA.Application.DTOs.InputModels;
-using OrbitaChallengeGrupoA.Domain.Entities;
-using OrbitaChallengeGrupoA.Domain.Repositories;
+using OrbitaChallengeGrupoA.Application.Queries.GetAllStudents;
+using OrbitaChallengeGrupoA.Application.Queries.GetStudentById;
 using System.Threading.Tasks;
 
 namespace OrbitaChallengeGrupoA.Controllers
@@ -9,58 +13,52 @@ namespace OrbitaChallengeGrupoA.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IMediator _mediator;
 
-        public StudentsController(IStudentRepository studentRepository)
+        public StudentsController(IMediator mediator)
         {
-            _studentRepository = studentRepository;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var students = await _studentRepository.GetAllAsync();
+            var query = new GetAllStudentsQuery();
 
-            return Ok(students);
+            var studentsViewModel = await _mediator.Send(query);
+
+            return Ok(studentsViewModel);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var student = await _studentRepository.GetByIdAsync(id);
+            var query = new GetStudentByIdQuery(id);
 
-            if(student == null)
+            var studentViewModel = await _mediator.Send(query);
+
+            if(studentViewModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(student);
+            return Ok(studentViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateStudentInputModel studentInputModel)
+        public async Task<IActionResult> Post([FromBody] CreateStudentCommand command)
         {
-            var student = new Student(studentInputModel.Name, studentInputModel.Email, studentInputModel.AR, studentInputModel.CPF);
+            var id = await _mediator.Send(command);
 
-            await _studentRepository.AddAsync(student);
-            await _studentRepository.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new { Id = student.Id }, studentInputModel);
+            return CreatedAtAction(nameof(GetById), new { Id = id}, command);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateStudentInputModel studentInputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateStudentInputModel inputModel)
         {
-            var student = await _studentRepository.GetByIdAsync(id);
+            var command = new UpdateStudentCommand(id, inputModel.Name, inputModel.Email);
 
-            if(student == null)
-            {
-                return NotFound();
-            }
-
-            student.Update(studentInputModel.Name, studentInputModel.Email);
-
-            await _studentRepository.SaveChangesAsync();
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -68,16 +66,9 @@ namespace OrbitaChallengeGrupoA.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var student = await _studentRepository.GetByIdAsync(id);
+            var command = new DeleteStudentCommand(id);
 
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            _studentRepository.Remove(student);
-
-            await _studentRepository.SaveChangesAsync();
+            await _mediator.Send(command);
 
             return NoContent();
         }

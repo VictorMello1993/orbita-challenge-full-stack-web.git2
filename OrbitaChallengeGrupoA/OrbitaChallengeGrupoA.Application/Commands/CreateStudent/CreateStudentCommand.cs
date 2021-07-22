@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace OrbitaChallengeGrupoA.Application.Commands.CreateStudent
 {
-    class CreateStudentCommand
+    public class CreateStudentCommand : IRequest<int>
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string AR { get; set; }
+        public string CPF { get; set; }
     }
 }
