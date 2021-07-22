@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrbitaChallengeGrupoA.Domain.Exceptions;
+using System;
 
 namespace OrbitaChallengeGrupoA.Domain.Entities
 {
@@ -22,7 +23,7 @@ namespace OrbitaChallengeGrupoA.Domain.Entities
         {
             if (!Active)
             {
-                return;
+                throw new UserInactiveException();
             }
 
             Name = name;
@@ -32,10 +33,12 @@ namespace OrbitaChallengeGrupoA.Domain.Entities
 
         public void Delete()
         {
-            if (Active)
+            if (!Active)
             {
-                Active = false;
+                throw new UserInactiveException();
             }
+
+            Active = false;
         }
     }
 }

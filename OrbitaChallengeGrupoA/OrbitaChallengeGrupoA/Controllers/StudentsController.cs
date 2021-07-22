@@ -6,6 +6,8 @@ using OrbitaChallengeGrupoA.Application.Commands.UpdateStudent;
 using OrbitaChallengeGrupoA.Application.DTOs.InputModels;
 using OrbitaChallengeGrupoA.Application.Queries.GetAllStudents;
 using OrbitaChallengeGrupoA.Application.Queries.GetStudentById;
+using OrbitaChallengeGrupoA.Domain.Entities;
+using OrbitaChallengeGrupoA.Domain.Repositories;
 using System.Threading.Tasks;
 
 namespace OrbitaChallengeGrupoA.Controllers

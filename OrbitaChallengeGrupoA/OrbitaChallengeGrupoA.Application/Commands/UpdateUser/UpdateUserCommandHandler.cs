@@ -1,6 +1,6 @@
 ﻿using MediatR;
+using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,13 +17,20 @@ namespace OrbitaChallengeGrupoA.Application.Commands.UpdateUser
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(request.Id);
 
-            user.Update(request.Name, request.Email);
+                user.Update(request.Name, request.Email);
 
-            await _userRepository.SaveChangesAsync();
+                await _userRepository.SaveChangesAsync();
 
-            return Unit.Value;
+                return Unit.Value;
+            }
+            catch
+            {
+                throw new UserInactiveException();
+            }
         }
     }
 }
