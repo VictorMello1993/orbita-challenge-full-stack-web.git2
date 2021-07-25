@@ -19,7 +19,7 @@ namespace OrbitaChallengeGrupoA.Domain.Entities
         public DateTime UpdatedAt { get; private set; }
         public bool Active { get; private set; }
 
-        public void Update(string name, string email)
+        public void Update(string name, string email, string passwordHash = "")
         {
             if (!Active)
             {
@@ -28,7 +28,8 @@ namespace OrbitaChallengeGrupoA.Domain.Entities
 
             Name = name;
             Email = email;
-            UpdatedAt = DateTime.Now;            
+            UpdatedAt = DateTime.Now;
+            Password = passwordHash;
         }
 
         public void Delete()

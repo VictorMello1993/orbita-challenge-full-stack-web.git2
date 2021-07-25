@@ -4,7 +4,7 @@ namespace OrbitaChallengeGrupoA.Domain.Exceptions
 {
     public class UserInactiveException : Exception
     {
-        public UserInactiveException() : base("The user is already inactive")
+        public UserInactiveException() : base ("Usuário inativo")
         {
 
         }

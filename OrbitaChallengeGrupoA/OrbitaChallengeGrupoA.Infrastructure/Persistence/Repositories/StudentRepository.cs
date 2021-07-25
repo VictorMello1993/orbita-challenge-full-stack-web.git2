@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrbitaChallengeGrupoA.Domain.Entities;
 using OrbitaChallengeGrupoA.Domain.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,7 +18,17 @@ namespace OrbitaChallengeGrupoA.Infrastructure.Persistence.Repositories
         public async Task AddAsync(Student student)
         {
             await _dbContext.Students.AddAsync(student);
-        }        
+        }
+
+        public async Task<bool> ExistsByARAsync(string AR)
+        {
+            return await _dbContext.Students.CountAsync(s => s.AR == AR) > 0;
+        }
+
+        public async Task<bool> ExistsByCPFAsync(string CPF)
+        {
+            return await _dbContext.Students.CountAsync(s => s.CPF == CPF) > 0;
+        }
 
         public async Task<List<Student>> GetAllAsync()
         {

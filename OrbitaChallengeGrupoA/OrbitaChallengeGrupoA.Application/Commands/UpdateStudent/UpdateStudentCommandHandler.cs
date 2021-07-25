@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,13 +18,20 @@ namespace OrbitaChallengeGrupoA.Application.Commands.UpdateStudent
 
         public async Task<Unit> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
         {
-            var student = await _studentRepository.GetByIdAsync(request.Id);
+            try
+            {
+                var student = await _studentRepository.GetByIdAsync(request.Id);
 
-            student.Update(request.Name, request.Email);
+                student.Update(request.Name, request.Email);
 
-            await _studentRepository.SaveChangesAsync();
+                await _studentRepository.SaveChangesAsync();
 
-            return Unit.Value;
+                return Unit.Value;
+            }
+            catch(Exception)
+            {
+                throw new StudentNotFoundException();
+            }
         }
     }
 }

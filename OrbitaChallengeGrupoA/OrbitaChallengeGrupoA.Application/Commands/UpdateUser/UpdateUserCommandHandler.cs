@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,9 +28,13 @@ namespace OrbitaChallengeGrupoA.Application.Commands.UpdateUser
 
                 return Unit.Value;
             }
-            catch
+            catch (UserInactiveException)
             {
-                throw new UserInactiveException();
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UserNotFoundException();
             }
         }
     }

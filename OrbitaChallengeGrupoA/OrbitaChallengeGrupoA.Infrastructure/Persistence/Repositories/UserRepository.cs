@@ -26,9 +26,19 @@ namespace OrbitaChallengeGrupoA.Infrastructure.Persistence.Repositories
             return await _dbContext.Users.Where(u => u.Active).ToListAsync();
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<User> GetByEmailAndPasswordAsync(string email, string passwordHash)
+        {
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.Password == passwordHash);
+        }
+
         public async Task<User> GetByIdAsync(int id)
         {
-            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Active && u.Id == id);
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task SaveChangesAsync()
