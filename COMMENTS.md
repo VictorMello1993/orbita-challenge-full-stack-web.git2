@@ -1,9 +1,10 @@
 # Decisão da arquitetura
-Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, foi possível adotar Clean Architeture para separar as classes em diferentes camadas. O projeto foi organizado em três camadas:
+Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, foi possível adotar Clean Architeture para separar as classes em diferentes camadas. O projeto foi organizado em quatro camadas:
 
  - Domain
  - Application
  - Infrastructure
+ - API
 
 ## Camada de domínio
   Na camada de domínio, foram criadas as classes de entidade de usuários e alunos. Também nessa mesma camada, também conta com uma classe abstrata **BaseEntity** que será alimentada pelas classes de usuário e aluno por id e data de cadastro. Além disso, contém as interfaces para se comunicar com a camada de infraestrutura para acesso ao banco de dados, via injeção de dependência, através do padrão **Repository**. Além de desacoplar as classes de domínio com as de infraestrutura, o motivo que adotei o padrão Repository é para tornar o código mais fácil de utilizar os testes unitários ao longo do desenvolvimento do projeto. 
@@ -19,6 +20,15 @@ Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, fo
 
 ## Camada de infraestrutura
   Na camada de infraestrutura contém as classes concretas de acesso a dados através do padrão Repository, a classe de mapeamento do Entity Framework (classe DbContext) e as migrations utilizadas para versionar as alterações realizadas no banco de dados a partir do mapeamento do Entity Framework. Também contém as classes concretas de serviços, como no caso, de serviço de autenticação usuário, tudo isso adotando via injeção de dependência da mesma maneira como ocorre nas classes repository.
+  
+## Camada de API
+  Na camada de API contém os controllers e os filtros, sendo que foi implementada um filtro de validação para deixar o código dos controllers ainda mais limpo, sem ter que fazer checagem diretamente por lá.
+  
+  ```csharp 
+  if(!ModelState.IsValid){
+    //Retornar BadRequest
+  }
+  ```
   
 # Bibliotecas utilizadas
 - Entity Framework Core
