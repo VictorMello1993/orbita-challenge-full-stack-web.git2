@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrbitaChallengeGrupoA.Domain.Entities;
 using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
 using System;
@@ -20,7 +21,7 @@ namespace OrbitaChallengeGrupoA.Application.Commands.DeleteStudent
         {
             try
             {
-                var student = await _studentRepository.GetByIdAsync(request.Id);
+                var student = await _studentRepository.GetByIdAsync(request.Id);                
 
                 _studentRepository.Remove(student);
 

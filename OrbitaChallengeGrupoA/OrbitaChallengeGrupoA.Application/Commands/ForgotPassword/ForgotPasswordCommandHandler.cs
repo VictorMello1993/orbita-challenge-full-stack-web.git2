@@ -20,14 +20,14 @@ namespace OrbitaChallengeGrupoA.Application.Commands.ForgotPassword
 
         public async Task<NewLoginUserViewModel> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
-            var passwordHash = _authService.ComputeSha256Hash(request.ConfirmNewPassword);
-
             var user = await _userRepository.GetByEmailAsync(request.Email);
 
             if(user == null)
             {
                 return null;
             }
+
+            var passwordHash = _authService.ComputeSha256Hash(request.ConfirmNewPassword);
 
             user.Update(user.Name, user.Email, passwordHash);
 

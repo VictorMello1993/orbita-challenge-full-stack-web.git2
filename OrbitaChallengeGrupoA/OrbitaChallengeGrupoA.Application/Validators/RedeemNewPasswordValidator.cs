@@ -15,7 +15,7 @@ namespace OrbitaChallengeGrupoA.Application.Validators
             {
                 if (user.NewPassword != user.ConfirmNewPassword)
                 {
-                    context.AddFailure("As senhas não coincidem uns às outras.");
+                    context.AddFailure("As senhas não coincidem umas às outras.");
                 }
 
                 if (!ValidatePassword(user.NewPassword) || !ValidatePassword(user.ConfirmNewPassword))
