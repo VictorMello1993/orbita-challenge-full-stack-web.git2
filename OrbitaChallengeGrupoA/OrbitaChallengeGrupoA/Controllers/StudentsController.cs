@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrbitaChallengeGrupoA.Application.Commands.CreateStudent;
 using OrbitaChallengeGrupoA.Application.Commands.DeleteStudent;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace OrbitaChallengeGrupoA.Controllers
 {
     [Route("api/students")]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly IMediator _mediator;

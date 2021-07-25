@@ -1,7 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrbitaChallengeGrupoA.Application.Commands;
 using OrbitaChallengeGrupoA.Application.Commands.CreateUser;
 using OrbitaChallengeGrupoA.Application.Commands.DeleteUser;
+using OrbitaChallengeGrupoA.Application.Commands.LoginUser;
 using OrbitaChallengeGrupoA.Application.Commands.UpdateUser;
 using OrbitaChallengeGrupoA.Application.DTOs.InputModels;
 using OrbitaChallengeGrupoA.Application.DTOs.ViewModels;
@@ -15,6 +18,7 @@ using System.Threading.Tasks;
 namespace OrbitaChallengeGrupoA.API.Controllers
 {
     [Route("api/users")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -55,6 +59,7 @@ namespace OrbitaChallengeGrupoA.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
             var id = await _mediator.Send(command);
@@ -99,6 +104,38 @@ namespace OrbitaChallengeGrupoA.API.Controllers
 
                 return NotFound(userNotFoundViewModel);
             }
+        }
+
+        [HttpPut("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+        {
+            var loginUserViewModel = await _mediator.Send(command);
+
+            if(loginUserViewModel == null)
+            {
+                var errorViewModel = new ErrorViewModel(HttpStatusCode.BadRequest, new InvalidLoginException());
+
+                return BadRequest(errorViewModel);
+            }
+
+            return Ok(loginUserViewModel);
+        }
+
+        [HttpPut("forgotpassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult>RedeemNewPassword([FromBody] ForgotPasswordCommand command)
+        {
+            var newLoginUserViewModel = await _mediator.Send(command);
+
+            if(newLoginUserViewModel == null)
+            {
+                var errorViewModel = new ErrorViewModel(HttpStatusCode.NotFound, new UserNotFoundException());
+
+                return NotFound(errorViewModel);
+            }
+
+            return Ok(newLoginUserViewModel);
         }
     }
 }
