@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using OrbitaChallengeGrupoA.Domain.Exceptions;
 using OrbitaChallengeGrupoA.Domain.Repositories;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace OrbitaChallengeGrupoA.Application.Commands.DeleteStudent
         {
             try
             {
-                var student = await _studentRepository.GetByIdAsync(request.Id);                
+                var student = await _studentRepository.GetByIdAsync(request.Id);
 
                 _studentRepository.Remove(student);
 
@@ -27,7 +28,7 @@ namespace OrbitaChallengeGrupoA.Application.Commands.DeleteStudent
 
                 return Unit.Value;
             }
-            catch
+            catch (Exception)
             {
                 throw new StudentNotFoundException();
             }

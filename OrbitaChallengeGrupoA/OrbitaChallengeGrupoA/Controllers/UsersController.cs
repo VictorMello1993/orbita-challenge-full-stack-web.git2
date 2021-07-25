@@ -4,9 +4,12 @@ using OrbitaChallengeGrupoA.Application.Commands.CreateUser;
 using OrbitaChallengeGrupoA.Application.Commands.DeleteUser;
 using OrbitaChallengeGrupoA.Application.Commands.UpdateUser;
 using OrbitaChallengeGrupoA.Application.DTOs.InputModels;
+using OrbitaChallengeGrupoA.Application.DTOs.ViewModels;
 using OrbitaChallengeGrupoA.Application.Queries.GetAllUsers;
 using OrbitaChallengeGrupoA.Application.Queries.GetUserById;
 using OrbitaChallengeGrupoA.Domain.Exceptions;
+using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OrbitaChallengeGrupoA.API.Controllers
@@ -29,9 +32,7 @@ namespace OrbitaChallengeGrupoA.API.Controllers
             var usersViewModel = await _mediator.Send(query);
 
             if (usersViewModel == null)
-            {
                 return NotFound();
-            }
 
             return Ok(usersViewModel);
         }
@@ -45,7 +46,9 @@ namespace OrbitaChallengeGrupoA.API.Controllers
 
             if (userViewModel == null)
             {
-                return NotFound();
+                var userNotFoundViewModel = new ErrorViewModel(HttpStatusCode.NotFound, new UserNotFoundException());
+
+                return NotFound(userNotFoundViewModel);
             }
 
             return Ok(userViewModel);
@@ -62,21 +65,40 @@ namespace OrbitaChallengeGrupoA.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateUserInputModel inputModel)
         {
-            var command = new UpdateUserCommand(id, inputModel.Name, inputModel.Email);
+            try
+            {
+                var command = new UpdateUserCommand(id, inputModel.Name, inputModel.Email);
 
-            await _mediator.Send(command);
+                await _mediator.Send(command);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                var userNotFoundViewModel = new ErrorViewModel(HttpStatusCode.NotFound, ex);
+
+                return NotFound(userNotFoundViewModel);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteUserCommand(id);
+            try
+            {
+                var command = new DeleteUserCommand(id);
 
-            await _mediator.Send(command);
+                await _mediator.Send(command);
 
-            return NoContent();
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                var userNotFoundViewModel = new ErrorViewModel(HttpStatusCode.NotFound, ex);
+
+                return NotFound(userNotFoundViewModel);
+            }
         }
     }
 }

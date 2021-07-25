@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OrbitaChallengeGrupoA.Application.Commands.CreateUser;
 using OrbitaChallengeGrupoA.Domain.Repositories;
+using OrbitaChallengeGrupoA.Filters;
 using OrbitaChallengeGrupoA.Infrastructure.Persistence;
 using OrbitaChallengeGrupoA.Infrastructure.Persistence.Repositories;
 
@@ -26,7 +28,9 @@ namespace OrbitaChallengeGrupoA
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)))
+                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommand>());
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OrbitaChallengeGrupoA", Version = "v1" });
@@ -47,9 +51,9 @@ namespace OrbitaChallengeGrupoA
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error");
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrbitaChallengeGrupoA v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrbitaChallengeGrupoA v1"));                
             }
 
             app.UseHttpsRedirection();
@@ -61,7 +65,7 @@ namespace OrbitaChallengeGrupoA
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });            
         }
     }
 }

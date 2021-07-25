@@ -28,7 +28,7 @@ namespace OrbitaChallengeGrupoA.Infrastructure.Persistence.Repositories
 
         public async Task<User> GetByIdAsync(int id)
         {
-            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Active && u.Id == id);
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task SaveChangesAsync()

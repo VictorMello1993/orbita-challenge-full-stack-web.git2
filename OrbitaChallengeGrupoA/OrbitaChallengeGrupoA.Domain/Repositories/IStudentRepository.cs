@@ -1,8 +1,5 @@
 ﻿using OrbitaChallengeGrupoA.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OrbitaChallengeGrupoA.Domain.Repositories
@@ -10,7 +7,9 @@ namespace OrbitaChallengeGrupoA.Domain.Repositories
     public interface IStudentRepository
     {
         Task<List<Student>> GetAllAsync();
-        Task<Student> GetByIdAsync(int id);        
+        Task<Student> GetByIdAsync(int id);
+        Task<bool> ExistsByARAsync(string AR);        
+        Task<bool> ExistsByCPFAsync(string CPF);        
         Task SaveChangesAsync();
         Task AddAsync(Student student);
         void Remove(Student student);
