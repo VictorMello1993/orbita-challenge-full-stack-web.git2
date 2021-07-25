@@ -13,7 +13,7 @@ Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, fo
 ## Camada de aplicação
   Na camada de aplicação, é o que representa casos de uso do sistema, ou seja, as funcionalidades que o usuário poderá fazer no sistema, como cadastrar aluno, alterar ou excluir, logar no sistema, redefinir a senha, gerenciar alunos, entre outras. Nessa camada, foi adotado o padrão **CQRS** para separar as responsabilidades de cada funcionalide do sistema, no sentido de separar as consultas (queries) das ações que alteram o estado do sistema (commands). Isso deixa o código dos controllers mais limpo, sem precisar adotar os serviços da camada de aplicação, que além de misturar os métodos que consultam com os os métodos que alteram o sistema, isso normalmente o deixaria mais extenso.
   
-  Além disso, contém as classes de DTO's para representar os input models para representar a entrada de dados da API, e os view models para representar a saída de dados para exibir na API quando completar uma requisição da API.
+  Além disso, contém as classes de DTO's para representar os input models para representar a entrada de dados da API, e os view models para representar a saída de dados para exibir na API quando completar uma requisição.
   
   Ainda nessa mesma camada, implementei todas as classes de validação para validar a entrada de dados da API.
 
