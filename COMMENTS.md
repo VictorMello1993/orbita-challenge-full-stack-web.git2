@@ -1,5 +1,5 @@
 # Decisão da arquitetura
-Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, foi possível adotar Clean Architeture para separar as classes em diferentes camadas. O projeto foi organizado em quatro camadas:
+Observando as funcionalidades do projeto, por se tratar de um CRUD de alunos, foi possível adotar Clean Architecture para separar as classes em diferentes camadas. O projeto foi organizado em quatro camadas:
 
  - Domain
  - Application
